@@ -156,7 +156,7 @@
 
   <script>
     const BACKEND = "https://YOUR_BACKEND_URL_HERE"; // ← ВСТАВЬ СВОЙ BACKEND
-    const ADMIN_PASSWORD = "YOUR_PASSWORD_HERE";      // ← ВСТАВЬ ПАРОЛЬ
+    const ADMIN_PASSWORD = "tl-358856";
 
     const loginCard = document.getElementById("loginCard");
     const adminPanel = document.getElementById("adminPanel");
@@ -176,6 +176,7 @@
         loginCard.style.display = "none";
         adminPanel.style.display = "block";
         loadMods();
+        setInterval(loadMods, 10000); // автообновление
       } else {
         loginError.style.display = "block";
       }
