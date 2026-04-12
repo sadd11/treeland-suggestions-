@@ -1,111 +1,257 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<title>Treeland — Предложение модов</title>
-<style>
+  <meta charset="UTF-8" />
+  <title>Treeland — предложения модов</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --md3-primary: #6750a4;
+      --md3-on-primary: #ffffff;
+      --md3-primary-container: #eaddff;
+      --md3-on-primary-container: #21005d;
+
+      --md3-surface: #fdf8ff;
+      --md3-on-surface: #1d1b20;
+      --md3-surface-variant: #e7e0ec;
+      --md3-on-surface-variant: #49454f;
+      --md3-outline: #79747e;
+
+      --md3-error: #b3261e;
+      --md3-on-error: #ffffff;
+
+      --md3-radius: 18px;
+      --md3-radius-small: 12px;
+      --md3-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    }
+
     body {
-        font-family: Arial, sans-serif;
-        background: #f5f5f5;
-        padding: 20px;
+      margin: 0;
+      font-family: system-ui, sans-serif;
+      background: var(--md3-surface);
+      color: var(--md3-on-surface);
+      padding: 16px;
+      display: flex;
+      justify-content: center;
     }
-    .box {
-        background: white;
-        padding: 20px;
-        border-radius: 10px;
-        max-width: 500px;
-        margin: auto;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+
+    .app {
+      width: 100%;
+      max-width: 900px;
     }
-    input, textarea {
-        width: 100%;
-        padding: 10px;
-        margin-top: 10px;
-        border-radius: 8px;
-        border: 1px solid #ccc;
+
+    .card {
+      background: var(--md3-surface);
+      border-radius: var(--md3-radius);
+      padding: 16px;
+      box-shadow: var(--md3-shadow);
+      margin-bottom: 16px;
     }
-    button {
-        margin-top: 15px;
-        width: 100%;
-        padding: 12px;
-        border: none;
-        border-radius: 8px;
-        background: #4CAF50;
-        color: white;
-        font-size: 16px;
-        cursor: pointer;
+
+    .title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 8px;
     }
-    button:hover {
-        background: #45a049;
+
+    .subtitle {
+      font-size: 0.9rem;
+      color: var(--md3-on-surface-variant);
+      margin-bottom: 16px;
     }
-    .mod {
-        background: white;
-        padding: 12px;
-        border-radius: 8px;
-        margin-top: 10px;
-        border-left: 4px solid #4CAF50;
+
+    .text-input, .text-area {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: var(--md3-radius-small);
+      border: 1px solid var(--md3-outline);
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+      background: var(--md3-surface);
+      color: var(--md3-on-surface);
     }
-</style>
+
+    .btn {
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+      margin-right: 6px;
+    }
+
+    .btn-filled {
+      background: var(--md3-primary);
+      color: var(--md3-on-primary);
+    }
+
+    .btn-outlined {
+      background: transparent;
+      border: 1px solid var(--md3-outline);
+      color: var(--md3-on-surface);
+    }
+
+    .mod-card {
+      background: var(--md3-surface-variant);
+      padding: 12px;
+      border-radius: var(--md3-radius-small);
+      margin-bottom: 10px;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      margin-bottom: 6px;
+    }
+
+    .status-approved { background: #c8e6c9; color: #1b5e20; }
+    .status-rejected { background: #ffcdd2; color: #b71c1c; }
+    .status-pending  { background: #fff9c4; color: #f57f17; }
+
+    .actions {
+      margin-top: 8px;
+    }
+
+    .admin-btn {
+      position: fixed;
+      left: 16px;
+      bottom: 16px;
+      background: #6750a4;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      z-index: 999;
+    }
+  </style>
 </head>
 <body>
+  <div class="app">
 
-<div class="box">
-    <h2>Предложить мод</h2>
+    <div class="card">
+      <div class="title">Предложить мод</div>
+      <div class="subtitle">Укажи ссылку и описание — мод попадёт в список.</div>
 
-    <input id="link" placeholder="Ссылка на мод">
-    <textarea id="desc" placeholder="Описание (необязательно)"></textarea>
+      <input id="modUrl" class="text-input" placeholder="Ссылка на мод" />
+      <textarea id="modReason" class="text-area" placeholder="Зачем нужен мод?"></textarea>
+      <input id="modNick" class="text-input" placeholder="Ник (необязательно)" />
 
-    <button onclick="sendMod()">Отправить</button>
-</div>
+      <button id="sendBtn" class="btn btn-filled">Отправить</button>
+    </div>
 
-<h2 style="text-align:center;margin-top:40px;">Предложенные моды</h2>
-<div id="mods"></div>
+    <div class="card">
+      <div class="title">Список модов</div>
+      <div class="subtitle">Обновляется автоматически каждые 10 секунд</div>
 
-<script>
-const API = "https://treeland-mods-suggestions-backend.onrender.com";
+      <input id="filterInput" class="text-input" placeholder="Фильтр" />
 
-function sendMod() {
-    const link = document.getElementById("link").value.trim();
-    const desc = document.getElementById("desc").value.trim();
+      <select id="sortSelect" class="text-input">
+        <option value="new">Сначала новые</option>
+        <option value="old">Сначала старые</option>
+        <option value="approved">Одобренные</option>
+        <option value="pending">Ожидают</option>
+        <option value="rejected">Отклонённые</option>
+      </select>
 
-    if (!link) {
-        alert("Введите ссылку");
-        return;
+      <div id="modsContainer"></div>
+    </div>
+
+  </div>
+
+  <a href="admin.html" class="admin-btn">Админка</a>
+
+  <script>
+    const BACKEND = "https://treeland-mods-suggestions-backend.onrender.com";
+
+    const modUrl = document.getElementById("modUrl");
+    const modReason = document.getElementById("modReason");
+    const modNick = document.getElementById("modNick");
+    const sendBtn = document.getElementById("sendBtn");
+
+    const modsContainer = document.getElementById("modsContainer");
+    const filterInput = document.getElementById("filterInput");
+    const sortSelect = document.getElementById("sortSelect");
+
+    let mods = [];
+
+    async function loadMods() {
+      const res = await fetch(`${BACKEND}/list`);
+      mods = await res.json();
+      renderMods();
     }
 
-    fetch(API + "/add", {
+    function renderMods() {
+      let list = [...mods];
+
+      const f = filterInput.value.toLowerCase();
+      if (f) {
+        list = list.filter(m =>
+          m.url.toLowerCase().includes(f) ||
+          m.reason.toLowerCase().includes(f) ||
+          (m.nick && m.nick.toLowerCase().includes(f))
+        );
+      }
+
+      const s = sortSelect.value;
+      if (s === "new") list.sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
+      if (s === "old") list.sort((a,b)=>new Date(a.createdAt)-new Date(b.createdAt));
+      if (s === "approved") list = list.filter(m=>m.status==="approved");
+      if (s === "pending") list = list.filter(m=>m.status==="pending");
+      if (s === "rejected") list = list.filter(m=>m.status==="rejected");
+
+      modsContainer.innerHTML = "";
+
+      list.forEach(mod => {
+        const card = document.createElement("div");
+        card.className = "mod-card";
+
+        const statusClass = {
+          approved: "status-approved",
+          rejected: "status-rejected",
+          pending: "status-pending"
+        }[mod.status];
+
+        card.innerHTML = `
+          <div class="status ${statusClass}">${mod.status}</div>
+          <div><b>Ссылка:</b> ${mod.url}</div>
+          <div><b>Описание:</b> ${mod.reason}</div>
+          <div><b>Ник:</b> ${mod.nick || "—"}</div>
+          <div><b>Дата:</b> ${new Date(mod.createdAt).toLocaleString("ru-RU")}</div>
+        `;
+
+        modsContainer.appendChild(card);
+      });
+    }
+
+    sendBtn.onclick = async () => {
+      const payload = {
+        url: modUrl.value.trim(),
+        reason: modReason.value.trim(),
+        nick: modNick.value.trim() || null
+      };
+
+      await fetch(`${BACKEND}/add`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ link, desc })
-    })
-    .then(r => r.json())
-    .then(() => {
-        alert("Мод отправлен!");
-        loadMods();
-    });
-}
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify(payload)
+      });
 
-function loadMods() {
-    fetch(API + "/list")
-        .then(r => r.json())
-        .then(data => {
-            const box = document.getElementById("mods");
-            box.innerHTML = "";
+      modUrl.value = "";
+      modReason.value = "";
+      modNick.value = "";
 
-            data.forEach(mod => {
-                box.innerHTML += `
-                    <div class="mod">
-                        <b>ID:</b> ${mod.id}<br>
-                        <b>Ссылка:</b> <a href="${mod.link}" target="_blank">${mod.link}</a><br>
-                        <b>Описание:</b> ${mod.desc || "—"}
-                    </div>
-                `;
-            });
-        });
-}
+      loadMods();
+    };
 
-loadMods();
-</script>
+    filterInput.oninput = renderMods;
+    sortSelect.onchange = renderMods;
 
+    loadMods();
+    setInterval(loadMods, 10000);
+  </script>
 </body>
 </html>
