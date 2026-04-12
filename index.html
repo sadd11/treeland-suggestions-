@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Моды • MD3</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Material Symbols Rounded -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --md-primary: #6750a4;
+      --md-primary-container: #eaddff;
+      --md-on-primary: #ffffff;
+      --md-on-primary-container: #21005d;
+      --md-surface: #fefbff;
+      --md-outline: #79747e;
+      --md-shadow: 0 8px 24px rgba(0,0,0,0.18);
+      --md-transition: 0.18s cubic-bezier(0.2, 0, 0, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      font-family: system-ui, "Roboto", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #f3f0ff;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    /* Контейнер приложения */
+    .app {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Верхняя панель */
+    .topbar {
+      padding: 16px 20px;
+      background: var(--md-primary-container);
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .topbar-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: color-mix(in srgb, var(--md-primary) 16%, #fff 84%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--md-on-primary-container);
+      font-size: 24px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.18);
+    }
+
+    .topbar-title {
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    /* Контент */
+    .screen {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      display: none;
+      animation: fade 0.25s ease;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Карточки */
+    .card {
+      background: #fff;
+      border-radius: 24px;
+      padding: 18px;
+      border: 1px solid rgba(121,116,126,0.18);
+      box-shadow: var(--md-shadow);
+      margin-bottom: 16px;
+    }
+
+    /* Поля */
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .field-label {
+      font-size: 13px;
+      color: #49454f;
+    }
+
+    .field-input,
+    .field-textarea {
+      border-radius: 16px;
+      border: 1px solid var(--md-outline);
+      padding: 12px 14px;
+      font-size: 15px;
+      background: #fefbff;
+      outline: none;
+      transition: var(--md-transition);
+    }
+
+    .field-input:focus,
+    .field-textarea:focus {
+      border-color: var(--md-primary);
+      box-shadow: 0 0 0 1px var(--md-primary);
+    }
+
+    .field-textarea {
+      resize: vertical;
+      min-height: 90px;
+    }
+
+    /* Кнопки */
+    .md-button {
+      border: none;
+      border-radius: 999px;
+      padding: 10px 22px;
+      font-size: 14px;
+      font-weight: 500;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: var(--md-transition);
+    }
+
+    .md-button-primary {
+      background: var(--md-primary);
+      color: var(--md-on-primary);
+      box-shadow: 0 3px 10px rgba(103,80,164,0.35);
+    }
+
+    .md-button-tonal {
+      background: var(--md-primary-container);
+      color: var(--md-on-primary-container);
+    }
+
+    /* Нижняя навигация */
+    .navbar {
+      height: 68px;
+      background: #fff;
+      border-top: 1px solid rgba(0,0,0,0.08);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    .nav-item {
+      flex: 1;
+      text-align: center;
+      padding: 8px 0;
+      cursor: pointer;
+      color: #49454f;
+      transition: var(--md-transition);
+    }
+
+    .nav-item.active {
+      color: var(--md-primary);
+    }
+
+    .nav-icon {
+      font-size: 26px;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .material-symbols-rounded {
+      font-variation-settings:
+        "FILL" 0,
+        "wght" 400,
+        "GRAD" 0,
+        "opsz" 24;
+    }
+  </style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- Верхняя панель -->
+  <div class="topbar">
+    <div class="topbar-icon">
+      <span class="material-symbols-rounded">extension</span>
+    </div>
+    <div class="topbar-title">Моды</div>
+  </div>
+
+  <!-- Экран 1: Предложенные моды -->
+  <div id="screen-suggested" class="screen active">
+    <h2>Предложенные моды</h2>
+
+    <div class="card">
+      <b>Пока пусто</b><br>
+      Здесь будут отображаться моды, которые предложили другие пользователи.
+    </div>
+  </div>
+
+  <!-- Экран 2: Предложить мод -->
+  <div id="screen-submit" class="screen">
+    <h2>Предложить мод</h2>
+
+    <div class="card">
+      <div class="field">
+        <div class="field-label">Ссылка</div>
+        <input id="link" class="field-input" type="url" placeholder="https://...">
+      </div>
+
+      <div class="field">
+        <div class="field-label">Описание</div>
+        <textarea id="desc" class="field-textarea" placeholder="Описание мода..."></textarea>
+      </div>
+
+      <button class="md-button md-button-primary" onclick="send()">
+        <span class="material-symbols-rounded">send</span>
+        Отправить
+      </button>
+    </div>
+  </div>
+
+  <!-- Нижняя навигация -->
+  <div class="navbar">
+    <div class="nav-item active" onclick="openTab('suggested', this)">
+      <span class="material-symbols-rounded nav-icon">list</span>
+      Предложенные
+    </div>
+
+    <div class="nav-item" onclick="openTab('submit', this)">
+      <span class="material-symbols-rounded nav-icon">add_circle</span>
+      Предложить
+    </div>
+  </div>
+
+</div>
+
+<script>
+function openTab(tab, el) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+  document.getElementById("screen-" + tab).classList.add('active');
+  el.classList.add('active');
+}
+
+async function send() {
+  alert("Отправка будет работать, когда подключим Worker");
+}
+</script>
+
+</body>
+</html>
