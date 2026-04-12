@@ -155,7 +155,7 @@
   </div>
 
   <script>
-    const BACKEND = "https://YOUR_BACKEND_URL_HERE"; // ← ВСТАВЬ СВОЙ BACKEND
+    const BACKEND = "https://treeland-mods-suggestions-backend.onrender.com";
     const ADMIN_PASSWORD = "tl-358856";
 
     const loginCard = document.getElementById("loginCard");
@@ -176,7 +176,7 @@
         loginCard.style.display = "none";
         adminPanel.style.display = "block";
         loadMods();
-        setInterval(loadMods, 10000); // автообновление
+        setInterval(loadMods, 10000);
       } else {
         loginError.style.display = "block";
       }
