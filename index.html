@@ -2,170 +2,273 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Treeland — Предложение модов</title>
+<title>Treeland — Предложения</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+
 <style>
   :root {
-    color-scheme: light dark;
     --md-sys-color-primary: #4f46e5;
-    --md-sys-color-surface: #f5f5f5;
-    --md-sys-color-on-surface: #111827;
-    --md-sys-color-outline: #d1d5db;
+    --md-sys-color-on-primary: #ffffff;
+    --md-sys-color-surface: #fdfbff;
+    --md-sys-color-on-surface: #1a1c1e;
+    --md-sys-color-surface-container: #f0f3f8;
+    --md-sys-color-outline: #73777f;
+    --status-pending: #73777f;
+    --status-approved: #2e7d32;
+    --status-rejected: #d32f2f;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
+
+  [data-theme="dark"] {
+    --md-sys-color-surface: #1a1c1e;
+    --md-sys-color-on-surface: #e2e2e6;
+    --md-sys-color-surface-container: #2f3033;
+    --md-sys-color-outline: #8d9199;
+  }
+
   body {
     margin: 0;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Roboto", sans-serif;
+    font-family: 'Google Sans', system-ui, sans-serif;
     background: var(--md-sys-color-surface);
     color: var(--md-sys-color-on-surface);
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 16px;
+    transition: var(--transition);
   }
+
   .card {
     width: 100%;
     max-width: 480px;
-    background: #fff;
-    border-radius: 18px;
-    padding: 20px 18px;
-    box-shadow: 0 8px 24px rgba(15,23,42,0.12);
+    background: var(--md-sys-color-surface-container);
+    border-radius: 28px;
+    padding: 24px;
     margin-top: 16px;
+    box-sizing: border-box;
+    transition: var(--transition);
   }
-  h1, h2 {
-    margin: 0 0 8px;
-    font-weight: 600;
-  }
-  label {
-    display: block;
+
+  h1, h2 { font-size: 22px; margin: 0 0 12px; font-weight: 500; display: flex; align-items: center; gap: 8px; }
+
+  .version-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+    padding: 6px 14px;
+    border-radius: 12px;
     font-size: 13px;
-    margin-top: 12px;
-    margin-bottom: 4px;
-    color: #6b7280;
+    margin-bottom: 20px;
   }
+
   input, textarea {
     width: 100%;
-    border-radius: 12px;
+    box-sizing: border-box;
+    border-radius: 16px;
     border: 1px solid var(--md-sys-color-outline);
-    padding: 10px 12px;
-    font-size: 14px;
+    padding: 14px 16px;
+    font-size: 16px;
+    background: var(--md-sys-color-surface);
+    color: inherit;
     outline: none;
-    background: #f9fafb;
+    margin-bottom: 12px;
+    transition: var(--transition);
   }
-  input:focus, textarea:focus {
-    border-color: var(--md-sys-color-primary);
-    box-shadow: 0 0 0 1px var(--md-sys-color-primary);
-    background: #fff;
-  }
-  button {
-    margin-top: 16px;
+
+  input:focus { border-color: var(--md-sys-color-primary); border-width: 2px; }
+
+  .btn-main {
     width: 100%;
     border: none;
-    border-radius: 999px;
-    padding: 12px;
+    border-radius: 100px;
+    padding: 16px;
     font-size: 15px;
     font-weight: 500;
     background: var(--md-sys-color-primary);
-    color: #fff;
+    color: var(--md-sys-color-on-primary);
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: var(--transition);
   }
-  button:active {
-    transform: scale(0.98);
-  }
-  .mod {
-    background: #fff;
+
+  .theme-toggle {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    background: var(--md-sys-color-surface-container);
     border-radius: 16px;
-    padding: 12px 14px;
-    margin-top: 10px;
-    border: 1px solid #e5e7eb;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   }
-  .mod small {
-    color: #6b7280;
+
+  .mod-item {
+    background: var(--md-sys-color-surface);
+    border-radius: 20px;
+    padding: 16px;
+    margin-top: 12px;
+    border: 1px solid var(--md-sys-color-outline);
+  }
+
+  .status-badge {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 6px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 8px;
+    display: inline-block;
+  }
+  .status-pending { background: var(--status-pending); }
+  .status-approved { background: var(--status-approved); }
+  .status-rejected { background: var(--status-rejected); }
+
+  .admin-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    border-top: 1px solid var(--md-sys-color-outline);
+    padding-top: 12px;
+  }
+
+  .btn-admin {
+    padding: 8px 12px;
+    border-radius: 8px;
     font-size: 12px;
+    border: none;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
   }
+
+  /* Анимация загрузки */
+  .loader {
+    width: 32px;
+    height: 32px;
+    border: 4px solid var(--md-sys-color-outline);
+    border-bottom-color: var(--md-sys-color-primary);
+    border-radius: 50%;
+    display: inline-block;
+    animation: rotation 1s linear infinite;
+  }
+  @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+  .admin-lock { position: fixed; bottom: 16px; right: 16px; opacity: 0.2; cursor: pointer; }
 </style>
 </head>
 <body>
 
-<div class="card">
-  <h1>Предложить мод (Может долго отправлятся)</h1>
-  <p style="font-size:13px;color:#6b7280;margin-bottom:8px;">
-    Версия: 26.1.1 Fabric
-  </p>
-
-  <label for="link">Ссылка на мод</label>
-  <input id="link" placeholder="https://...">
-
-  <label for="desc">Комментарий (необязательно)</label>
-  <textarea id="desc" rows="3" placeholder="Почему этот мод стоит добавить?"></textarea>
-
-  <button onclick="sendMod()">Отправить</button>
+<div class="theme-toggle" onclick="toggleTheme()">
+  <span class="material-symbols-outlined" id="theme-icon">dark_mode</span>
 </div>
 
 <div class="card">
-  <h2>Предложенные моды (может долго загружатся)</h2>
-  <div id="mods"></div>
+  <h1><span class="material-symbols-outlined">add_task</span> Предложить мод</h1>
+  <div class="version-tag">
+    <span class="material-symbols-outlined" style="font-size: 18px;">extension</span>
+    Версия: 26.1.1 Fabric
+  </div>
+
+  <input id="link" placeholder="Ссылка">
+  <textarea id="desc" rows="3" placeholder="Почему этот мод нужен серверу?"></textarea>
+
+  <button class="btn-main" onclick="sendMod()">
+    <span class="material-symbols-outlined">send</span> Отправить
+  </button>
+</div>
+
+<div class="card">
+  <h2><span class="material-symbols-outlined">list_alt</span> Все предложения</h2>
+  <div id="mods" style="text-align: center;"></div>
+</div>
+
+<div class="admin-lock" onclick="enterAdmin()">
+  <span class="material-symbols-outlined">shield_person</span>
 </div>
 
 <script>
 const API = "https://treeland-mods-suggestions-backend.onrender.com";
+let adminPass = "";
+
+function autoPing() { fetch(API + "/list").catch(() => {}); }
+setInterval(autoPing, 3000); autoPing();
+
+function toggleTheme() {
+  const isDark = document.body.getAttribute('data-theme') === 'dark';
+  const target = isDark ? 'light' : 'dark';
+  document.body.setAttribute('data-theme', target);
+  document.getElementById('theme-icon').innerText = target === 'dark' ? 'light_mode' : 'dark_mode';
+  localStorage.setItem('theme', target);
+}
+
+if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+  document.body.setAttribute('data-theme', 'dark');
+  document.getElementById('theme-icon').innerText = 'light_mode';
+}
+
+function enterAdmin() {
+  const p = prompt("Пароль:");
+  if (p === "tl-358856") { adminPass = p; loadMods(); }
+}
+
+function loadMods() {
+  const box = document.getElementById("mods");
+  box.innerHTML = '<div style="padding:20px;"><span class="loader"></span></div>';
+  
+  fetch(API + "/list")
+    .then(r => r.json())
+    .then(data => {
+      box.innerHTML = "";
+      data.reverse().forEach(mod => {
+        const sMap = { 'pending': ['Ожидание', 'status-pending'], 'approved': ['Одобрено', 'status-approved'], 'rejected': ['Отклонено', 'status-rejected'] };
+        const s = sMap[mod.status || 'pending'];
+
+        let adminActions = adminPass ? `
+          <div class="admin-actions">
+            <button class="btn-admin" style="background:#2e7d32" onclick="doAction('${mod.id}', 'approve')"><span class="material-symbols-outlined" style="font-size:16px">check</span></button>
+            <button class="btn-admin" style="background:#d32f2f" onclick="doAction('${mod.id}', 'reject')"><span class="material-symbols-outlined" style="font-size:16px">close</span></button>
+            <button class="btn-admin" style="background:#444" onclick="doAction('${mod.id}', 'delete')"><span class="material-symbols-outlined" style="font-size:16px">delete</span></button>
+          </div>` : "";
+
+        box.innerHTML += `
+          <div class="mod-item" style="text-align: left;">
+            <span class="status-badge ${s[1]}">${s[0]}</span>
+            <div style="font-weight:500;"><a href="${mod.link}" target="_blank" style="color:var(--md-sys-color-primary);text-decoration:none;">Открыть мод</a></div>
+            <div style="font-size:13px; opacity:0.8; margin-top:4px;">${mod.desc || "Нет описания"}</div>
+            ${adminActions}
+          </div>`;
+      });
+    });
+}
 
 function sendMod() {
   const link = document.getElementById("link").value.trim();
   const desc = document.getElementById("desc").value.trim();
-
-  if (!link) {
-    alert("Введите ссылку на мод");
-    return;
-  }
-
-  fetch(API + "/add", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ link, desc })
-  })
-  .then(r => r.json())
-  .then(res => {
-    if (res.error) {
-      alert("Ошибка: " + res.error);
-      return;
-    }
-    alert("Мод отправлен на рассмотрение");
-    document.getElementById("link").value = "";
-    document.getElementById("desc").value = "";
-    loadMods();
-  })
-  .catch(() => alert("Ошибка сети"));
+  if (!link) return alert("Нужна ссылка");
+  fetch(API + "/add", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ link, desc }) }).then(() => {
+    document.getElementById("link").value = ""; document.getElementById("desc").value = ""; loadMods();
+  });
 }
 
-function loadMods() {
-  fetch(API + "/list")
-    .then(r => r.json())
-    .then(data => {
-      const box = document.getElementById("mods");
-      box.innerHTML = "";
-      if (!data.length) {
-        box.innerHTML = '<p style="font-size:13px;color:#6b7280;">Пока нет одобренных модов.</p>';
-        return;
-      }
-      data.forEach(mod => {
-        box.innerHTML += `
-          <div class="mod">
-            <div style="font-size:14px;">
-              <a href="${mod.link}" target="_blank">${mod.link}</a>
-            </div>
-            <small>${mod.desc || "Без описания"}</small>
-          </div>
-        `;
-      });
-    })
-    .catch(() => {
-      document.getElementById("mods").innerHTML =
-        '<p style="font-size:13px;color:#b91c1c;">Не удалось загрузить список модов.</p>';
-    });
+function doAction(id, action) {
+  fetch(API + "/admin_action", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id, action, password: adminPass }) }).then(() => loadMods());
 }
 
 loadMods();
 </script>
-
 </body>
 </html>
