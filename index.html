@@ -155,7 +155,6 @@
     gap: 4px;
   }
 
-  /* Анимация загрузки */
   .loader {
     width: 32px;
     height: 32px;
@@ -237,16 +236,20 @@ function loadMods() {
         const sMap = { 'pending': ['Ожидание', 'status-pending'], 'approved': ['Одобрено', 'status-approved'], 'rejected': ['Отклонено', 'status-rejected'] };
         const s = sMap[mod.status || 'pending'];
 
+        // Кнопка вопросика, если есть причина
+        const reasonBtn = (mod.status === 'rejected' && mod.reason) ? 
+          `<span class="material-symbols-outlined" style="font-size:16px; cursor:help; vertical-align:middle; margin-left:4px; color:var(--status-rejected)" onclick="alert('Причина отклонения: ${mod.reason.replace(/'/g, "\\'")}')">help</span>` : "";
+
         let adminActions = adminPass ? `
           <div class="admin-actions">
             <button class="btn-admin" style="background:#2e7d32" onclick="doAction('${mod.id}', 'approve')"><span class="material-symbols-outlined" style="font-size:16px">check</span></button>
-            <button class="btn-admin" style="background:#d32f2f" onclick="doAction('${mod.id}', 'reject')"><span class="material-symbols-outlined" style="font-size:16px">close</span></button>
-            <button class="btn-admin" style="background:#444" onclick="doAction('${mod.id}', 'delete')"><span class="material-symbols-outlined" style="font-size:16px">delete</span></button>
+            <button class="btn-admin" style="background:#d32f2f" onclick="const r = prompt('Причина отклонения:'); if(r !== null) doAction('${mod.id}', 'reject', r)"><span class="material-symbols-outlined" style="font-size:16px">close</span></button>
+            <button class="btn-admin" style="background:#444" onclick="if(confirm('Удалить?')) doAction('${mod.id}', 'delete')"><span class="material-symbols-outlined" style="font-size:16px">delete</span></button>
           </div>` : "";
 
         box.innerHTML += `
           <div class="mod-item" style="text-align: left;">
-            <span class="status-badge ${s[1]}">${s[0]}</span>
+            <span class="status-badge ${s[1]}">${s[0]}</span>${reasonBtn}
             <div style="font-weight:500;"><a href="${mod.link}" target="_blank" style="color:var(--md-sys-color-primary);text-decoration:none;">Открыть мод</a></div>
             <div style="font-size:13px; opacity:0.8; margin-top:4px;">${mod.desc || "Нет описания"}</div>
             ${adminActions}
@@ -264,8 +267,12 @@ function sendMod() {
   });
 }
 
-function doAction(id, action) {
-  fetch(API + "/admin_action", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id, action, password: adminPass }) }).then(() => loadMods());
+function doAction(id, action, reason = "") {
+  fetch(API + "/admin_action", { 
+    method: "POST", 
+    headers: { "Content-Type": "application/json" }, 
+    body: JSON.stringify({ id, action, reason, password: adminPass }) 
+  }).then(() => loadMods());
 }
 
 loadMods();
